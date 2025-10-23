@@ -2,7 +2,7 @@ package br.com.acciolygm.CfeSatProcessor.Service;
 
 import br.com.acciolygm.CfeSatProcessor.Model.Cupom;
 import br.com.acciolygm.CfeSatProcessor.Model.Item;
-import br.com.acciolygm.CfeSatProcessor.utils.XmlUtils;
+import br.com.acciolygm.CfeSatProcessor.Utils.XmlUtils;
 
 import org.w3c.dom.*;
 import javax.xml.xpath.*;
@@ -12,7 +12,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-
+/**
+ * Classe responsável por interpretar e extrair informações fiscais de um XML de CF-e SAT.
+ *
+ * O parser lê o conteúdo do XML ,
+ * mapeia para objetos e devolve o resultado
+ * pronto para ser salvo em banco de dados.
+ */
 public class XmlSatParser {
     private final XPath xp = XPathFactory.newInstance().newXPath();
 
@@ -40,8 +46,8 @@ public class XmlSatParser {
         String Cfe = text(doc, "/CFe/infCFe/ide/nCFe");
 
         // Data/hora emissão
-        String issuedD = text(doc, "/CFe/infCFe/ide/dEmi"); // yyyyMMdd
-        String issuedH = text(doc, "/CFe/infCFe/ide/hEmi"); // HHmmss
+        String issuedD = text(doc, "/CFe/infCFe/ide/dEmi");
+        String issuedH = text(doc, "/CFe/infCFe/ide/hEmi");
         LocalDateTime issuedDate = LocalDateTime.parse(issuedD + issuedH, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
         // Valor total do cupom

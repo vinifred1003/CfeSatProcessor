@@ -1,4 +1,4 @@
-package br.com.acciolygm.CfeSatProcessor.utils;
+package br.com.acciolygm.CfeSatProcessor.Utils;
 
 import java.io.*;
 import java.nio.file.*;
@@ -26,5 +26,4 @@ public class ZipUtils {
         }
         return tempDir;
     }
-
 }

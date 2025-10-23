@@ -1,13 +1,12 @@
 package br.com.acciolygm.CfeSatProcessor;
 
 import br.com.acciolygm.CfeSatProcessor.Service.CupomService;
-import br.com.acciolygm.CfeSatProcessor.utils.ZipUtils;
+import br.com.acciolygm.CfeSatProcessor.Utils.ZipUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.*;
 
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -21,6 +20,11 @@ public class CfeSatProcessorApplication implements CommandLineRunner {
 
     @Value("${cfe.import.dir:./src/main/resources/Data/files_cfe_zipped/2024_12_28.zip}")
     private String defaultDirZip;
+
+    /**
+     * Este projeto tem como objetivo lêr arquivos XML de CF-e SAT (possivelmente dentro de arquivos ZIP),
+     * extrair informações fiscais e as armazenar em banco de dados.
+     */
 
     public CfeSatProcessorApplication(CupomService service) {
         this.service = service;

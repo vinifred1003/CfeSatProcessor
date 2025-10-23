@@ -1,4 +1,4 @@
-package br.com.acciolygm.CfeSatProcessor.utils;
+package br.com.acciolygm.CfeSatProcessor.Utils;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilderFactory;

@@ -11,6 +11,16 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Serviço responsável pelas regras de negócio relacionadas aos Cupons Fiscais Eletrônicos (CF-e SAT).
+ *
+ * Esta classe faz a ponte entre a camada de persistência (repositórios) e
+ * a camada de parsing (XmlSatParser), garantindo:
+ * - prevenção de duplicidades,
+ * - persistência dos cupons e itens,
+ * - e tratamento de exceções de negócio.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class CupomService {
@@ -18,7 +28,7 @@ public class CupomService {
     private final CupomRepository cupomRepository;
     private final XmlSatParser parser = new XmlSatParser();
 
-
+    //Importa os arquivos
     public void importDirectory(Path dir) {
         try (var stream = Files.walk(dir)) {
             stream.filter(p -> p.toString().endsWith(".xml"))
@@ -27,7 +37,7 @@ public class CupomService {
             throw new BusinessException("Falha ao acessar diretório: " + dir);
         }
     }
-
+    //Salva os arquivos no banco, filtrado-os
     private void processFileSafely(Path path) {
         try {
             var result = parser.parse(path.toFile());
@@ -52,13 +62,13 @@ public class CupomService {
                     path.getFileName(), e.getClass().getSimpleName());
         }
     }
-
+    //Lista os Arquivos pelo número de CF-e
     public void listByCfe() {
         cupomRepository.findAll(Sort.by(Sort.Direction.ASC, "cfe"))
                 .forEach(c -> System.out.printf("CF-e %s | Chave %s | Emissão %s | Total %s%n",
                         c.getCfe(), c.getAccessKey(), c.getIssuedAt(), c.getTotal()));
     }
-
+    //Lista os Arquivos pelo valor
     public void listByValue() {
         cupomRepository.findAll(Sort.by(Sort.Direction.DESC, "total"))
                 .forEach(c -> System.out.printf("Total %s | CF-e %s | Chave %s | Emissão %s%n",
